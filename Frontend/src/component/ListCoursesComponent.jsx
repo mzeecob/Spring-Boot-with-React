@@ -1,6 +1,26 @@
-import { Component } from "react";
+import React, { Component } from "react";
+import CourseDataService from "../service/CourseDataService";
 
 class ListCoursesComponent extends Component{
+
+
+    constructor(props) {
+        super(props)
+        this.refreshCourses = this.refreshCourses.bind(this)
+    }
+
+    componentDidMount() {
+        this.refreshCourses();
+    }
+
+    refreshCourses() {
+        CourseDataService.retrieveAllCourses()
+            .then(
+                response => {
+                    console.log(response);
+                }
+            )
+    }
 
     render() {
         return(
