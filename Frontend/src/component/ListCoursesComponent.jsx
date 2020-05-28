@@ -6,6 +6,10 @@ class ListCoursesComponent extends Component{
 
     constructor(props) {
         super(props)
+        this.state = {
+            courses: [],
+            message: null
+        }
         this.refreshCourses = this.refreshCourses.bind(this)
     }
 
@@ -18,6 +22,7 @@ class ListCoursesComponent extends Component{
             .then(
                 response => {
                     console.log(response);
+                    this.setState({courses: response.data})
                 }
             )
     }
@@ -35,10 +40,16 @@ class ListCoursesComponent extends Component{
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Learn Full stack with Spring Boot and Angular</td>
-                            </tr>
+                            {
+                                this.state.courses.map(
+                                    course => 
+                                    <tr key={course.id}>
+                                        <td>{course.id}</td>
+                                        <td>{course.description}</td>
+
+                                    </tr>
+                                )
+                            }
                         </tbody>
                     </table>
                 </div>
