@@ -21,4 +21,21 @@ public class CoursesHardcodedService {
         return courses;
     }
 
+    public Course deleteById(long id){
+        Course course = findByID(id);
+
+        if (course == null) { return null; }
+
+        if (courses.remove(course)) { return course; }
+
+        return null;
+    }
+
+    private Course findByID(long id) {
+        for ( Course course: courses){
+            if (course.getId() == id) { return course; }
+        }
+        return null;
+    }
+
 }
