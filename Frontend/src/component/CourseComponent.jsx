@@ -30,7 +30,19 @@ class CourseComponent extends Component{
     }
 
     onSubmit(values) {
-        
+        let course = {
+            id: this.state.id,
+            description: values.description,
+            targetDate: values.targetDate
+        }
+
+        if (this.state.id === -1) {
+            CourseDataService.createCourse(course)
+                .then(() => this.props.history.push('/courses'))
+        } else {
+            CourseDataService.updateCourse(this.state.id, course)
+                .then(() => this.props.history.push('/courses'))
+        }
     }
 
     validate(values) {
