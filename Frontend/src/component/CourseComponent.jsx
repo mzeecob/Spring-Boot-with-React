@@ -12,7 +12,8 @@ class CourseComponent extends Component{
             id: this.props.match.params.id,
             description: ''
         }
-
+        this.onSubmit = this.onSubmit.bind(this)
+        this.validate = this.validate.bind(this)
     }
 
     componentDidMount() {
@@ -20,25 +21,53 @@ class CourseComponent extends Component{
         if (this.state.id == -1) {
             return
         }
-
         CourseDataService.retrieveCourse(this.state.id)
-            .then(response => this.setState({
-                description: response.data.description
-            }))
+        .then(
+            response => {
+                this.setState({ description: response.data.description })
+            }
+        ) 
     }
+
+    onSubmit(values) {
+        
+    }
+
+    validate(values) {
+        let errors = {}
+        if (!values.description) {
+            errors.description = 'Enter a Description'
+        } else if (values.description.length < 5) {
+            errors.description = 'Enter atleast 5 Characters in Description'
+        }
+    
+        return errors
+    }
+
+    
 
     render() {
         let { description, id } = this.state
         return (
             <div>
+               
                 <h3>Course</h3>
                 <div className="container">
                     <Formik
-                        initialValues={{ id, description }}
+                        initialValues={{ description, id }}
+                        onSubmit={this.onSubmit}
+                        validateOnChange={false}
+                        validateOnBlur={false}
+                        validate={this.validate}
+                        enableReinitialize={true}
                     >
                         {
                             (props) => (
                                 <Form>
+
+                                    <ErrorMessage name="description" component="div"
+                                        className="alert alert-warning" />
+
                                     <fieldset className="form-group">
                                         <label>Id</label>
                                         <Field className="form-control" type="text" name="id" disabled />
